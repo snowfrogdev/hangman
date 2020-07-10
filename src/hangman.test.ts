@@ -64,3 +64,27 @@ describe('Hangman.guess(letter: string),', () => {
     }
   );
 });
+
+describe('Hangman.gameIsInProgress(),', () => {
+  test.each`
+    secretWord   | maxBadGuess | guesses                           | result
+    ${'Rage'}    | ${0}        | ${['r', 'a', 'g', 'e']}           | ${false}
+    ${'against'} | ${2}        | ${['w', 'y', 'a']}                | ${true}
+    ${'the'}     | ${1}        | ${['Q', 't', 'h', 'e']}           | ${false}
+    ${'Machine'} | ${2}        | ${['x', 'M', 'y', 'a', 'C']}      | ${true}
+    ${'Blood'}   | ${2}        | ${['k', 'B', 'a', 'D', 'F']}      | ${false}
+    ${'Hound'}   | ${1}        | ${['H']}                          | ${true}
+    ${'Gang'}    | ${3}        | ${['x', 'g', 'y', 'a', 'C', 'h']} | ${false}
+  `(
+    'given secretWord is "$secretWord" and incorrectGuessesAllowed is "$maxBadGuess", if guesses are "$guesses", return "$result"',
+    ({ secretWord, maxBadGuess, guesses, result }) => {
+      const game = new Hangman(secretWord, maxBadGuess);
+
+      for (const guess of guesses) {
+        game.guess(guess);
+      }
+
+      expect(game.gameIsInProgress).toBe(result);
+    }
+  );
+});

@@ -11,7 +11,7 @@ export class Hangman {
   }
 
   get gameIsInProgress() {
-    return true;
+    return !this.isGameLost() && !this.isGameWon();
   }
 
   guess(letter: string): Result {
