@@ -5,4 +5,8 @@ class Hangman {
     this.secretWord = secretWord.toUpperCase();
     this.incorrectGuessesAllowed = incorrectGuessesAllowed;
   }
+
+  get gameIsInProgress() {
+    return true;
+  }
 }
