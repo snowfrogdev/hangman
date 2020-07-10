@@ -15,11 +15,17 @@ export class Hangman {
   guess(letter: string): Result {
     if (this.isInvalid(letter)) return Result.Invalid;
 
-    return Result.Correct;
+    if (this.isInTheSecretWord(letter)) return Result.Correct
+
+    return Result.Incorrect;
   }
 
   private isInvalid(letter: string): boolean {
     return !/^[a-z]{1}$/gi.test(letter);
+  }
+
+  private isInTheSecretWord(letter: string): boolean {
+    return new RegExp(letter, 'gi').test(this.secretWord);
   }
 }
 
