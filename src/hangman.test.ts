@@ -88,3 +88,28 @@ describe('Hangman.gameIsInProgress(),', () => {
     }
   );
 });
+
+describe('Hangman.maskedSecretWord,', () => {
+  test.each`
+    secretWord   | maxBadGuess | guesses                           | result
+    ${'Rage'}    | ${0}        | ${['r', 'a', 'g', 'e']}           | ${'RAGE'}
+    ${'against'} | ${2}        | ${['w', 'y', 'a']}                | ${'A_A____'}
+    ${'the'}     | ${1}        | ${['Q', 't', 'h', 'e']}           | ${'THE'}
+    ${'Machine'} | ${2}        | ${['x', 'M', 'y', 'a', 'C']}      | ${'MAC____'}
+    ${'Blood'}   | ${2}        | ${['k', 'B', 'a', 'D', 'F']}      | ${'B___D'}
+    ${'Hound'}   | ${1}        | ${['N']}                          | ${'___N_'}
+    ${'Gang'}    | ${3}        | ${['x', 'g', 'y', 'a', 'C', 'h']} | ${'GA_G'}
+    ${'Tool'}    | ${3}        | ${[]}                             | ${'____'}
+  `(
+    'given secretWord is "$secretWord" and incorrectGuessesAllowed is "$maxBadGuess", if guesses are "$guesses", return "$result"',
+    ({ secretWord, maxBadGuess, guesses, result }) => {
+      const game = new Hangman(secretWord, maxBadGuess);
+
+      for (const guess of guesses) {
+        game.guess(guess);
+      }
+
+      expect(game.maskedSecretWord).toBe(result);
+    }
+  );
+});

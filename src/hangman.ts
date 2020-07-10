@@ -14,6 +14,19 @@ export class Hangman {
     return !this.isGameLost() && !this.isGameWon();
   }
 
+  get maskedSecretWord(): string {
+    return this.secretWord
+      .split('')
+      .map(this.mask, this)
+      .join('');
+  }
+
+  private mask(letter: string): string {
+    if (this.guesses.has(letter)) return letter;
+
+    return '_';
+  }
+
   guess(letter: string): Result {
     if (this.isInvalid(letter)) return Result.Invalid;
     const validLetter = letter.toUpperCase();
