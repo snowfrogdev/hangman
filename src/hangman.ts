@@ -22,6 +22,8 @@ export class Hangman {
 
     this.guesses.add(validLetter);
 
+    if (this.isGameWon()) return Result.Won;
+
     if (this.isInTheSecretWord(validLetter)) return Result.Correct;
 
     this.incorrectGuesses.push(validLetter);
@@ -38,5 +40,12 @@ export class Hangman {
 
   private isInTheSecretWord(validLetter: string): boolean {
     return new RegExp(validLetter, 'gi').test(this.secretWord);
+  }
+
+  private isGameWon(): boolean {
+    const lettersToGuess = new Set(this.secretWord);
+    this.guesses.forEach(guess => lettersToGuess.delete(guess));
+
+    return lettersToGuess.size === 0;
   }
 }
