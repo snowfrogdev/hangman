@@ -1,3 +1,5 @@
+import { Result } from "./result";
+
 export class Hangman {
   private secretWord: string;
   private incorrectGuessesAllowed: number;
@@ -10,7 +12,15 @@ export class Hangman {
     return true;
   }
 
-  guess(letter: string): string {
-    return 'result';
+  guess(letter: string): Result {
+    if (this.isInvalid(letter)) return Result.Invalid;
+
+    return Result.Correct;
+  }
+
+  private isInvalid(letter: string): boolean {
+    return !/^[a-z]{1}$/gi.test(letter);
   }
 }
+
+
