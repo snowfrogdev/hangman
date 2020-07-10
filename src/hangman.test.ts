@@ -41,15 +41,18 @@ describe('Hangman.guess(letter: string),', () => {
   );
 
   test.each`
-    secretWord   | guesses                                | result
-    ${'Rage'}    | ${['r', 'a', 'g', 'e']}                | ${Result.Won}
-    ${'against'} | ${['a', 'g', 'i', 'n', 's', 't']}      | ${Result.Won}
-    ${'the'}     | ${['t', 'h', 'e']}                     | ${Result.Won}
-    ${'Machine'} | ${['M', 'a', 'C', 'h', 'I', 'n', 'E']} | ${Result.Won}
+    secretWord   | maxBadGuess | guesses                                          | result
+    ${'Rage'}    | ${0}        | ${['r', 'a', 'g', 'e']}                          | ${Result.Won}
+    ${'against'} | ${2}        | ${['w', 'y', 'a', 'g', 'i', 'n', 's', 't']}      | ${Result.Won}
+    ${'the'}     | ${1}        | ${['Q', 't', 'h', 'e']}                          | ${Result.Won}
+    ${'Machine'} | ${2}        | ${['x', 'M', 'y', 'a', 'C', 'h', 'I', 'n', 'E']} | ${Result.Won}
+    ${'Blood'}   | ${2}        | ${['k', 'B', 'a', 'D', 'F']}                     | ${Result.Lost}
+    ${'Hound'}   | ${1}        | ${['H', 'M', 'o', 'Q']}                          | ${Result.Lost}
+    ${'Gang'}    | ${3}        | ${['x', 'g', 'y', 'a', 'C', 'h']}                | ${Result.Lost}
   `(
-    'given secretWord is "$secretWord", if guesses are "$guesses", return "$result"',
-    ({ secretWord, guesses, result }) => {
-      const game = new Hangman(secretWord, 1);
+    'given secretWord is "$secretWord" and incorrectGuessesAllowed is "$maxBadGuess", if guesses are "$guesses", return "$result"',
+    ({ secretWord, maxBadGuess, guesses, result }) => {
+      const game = new Hangman(secretWord, maxBadGuess);
       const lastGuess = guesses[guesses.length - 1];
       const guessesExceptLast = guesses.slice(0, -1);
 

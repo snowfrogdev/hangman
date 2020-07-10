@@ -27,6 +27,9 @@ export class Hangman {
     if (this.isInTheSecretWord(validLetter)) return Result.Correct;
 
     this.incorrectGuesses.push(validLetter);
+
+    if (this.isGameLost()) return Result.Lost;
+
     return Result.Incorrect;
   }
 
@@ -38,14 +41,18 @@ export class Hangman {
     return this.guesses.has(validLetter);
   }
 
-  private isInTheSecretWord(validLetter: string): boolean {
-    return new RegExp(validLetter, 'gi').test(this.secretWord);
-  }
-
   private isGameWon(): boolean {
     const lettersToGuess = new Set(this.secretWord);
-    this.guesses.forEach(guess => lettersToGuess.delete(guess));
+    this.guesses.forEach((guess) => lettersToGuess.delete(guess));
 
     return lettersToGuess.size === 0;
+  }
+
+  private isGameLost(): boolean {
+    return this.incorrectGuesses.length > this.incorrectGuessesAllowed;
+  }
+
+  private isInTheSecretWord(validLetter: string): boolean {
+    return new RegExp(validLetter, 'gi').test(this.secretWord);
   }
 }
