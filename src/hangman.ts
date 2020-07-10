@@ -3,6 +3,7 @@ import { Result } from "./result";
 export class Hangman {
   private secretWord: string;
   private incorrectGuessesAllowed: number;
+  private incorrectGuesses: string[] = [];
   constructor(secretWord: string, incorrectGuessesAllowed: number) {
     this.secretWord = secretWord.toUpperCase();
     this.incorrectGuessesAllowed = incorrectGuessesAllowed;
@@ -17,6 +18,7 @@ export class Hangman {
 
     if (this.isInTheSecretWord(letter)) return Result.Correct
 
+    this.incorrectGuesses.push(letter);
     return Result.Incorrect;
   }
 
