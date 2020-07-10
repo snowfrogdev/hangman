@@ -3,6 +3,7 @@
 ## Installation
 
 ```bash
+npm i -g parcel
 npm install
 ```
 
