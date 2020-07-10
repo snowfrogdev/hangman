@@ -1,20 +1,17 @@
 import { Hangman } from './hangman';
-import { Result } from './result';
-
-const game = new Hangman('Vegemite', 6);
 
 const secretWord = document.getElementById('secretWord') as HTMLHeadingElement;
 const guess = document.getElementById('guess') as HTMLInputElement;
-const button = document.querySelector('button') as HTMLButtonElement;
+const submitButton = document.getElementById('submit') as HTMLButtonElement;
+const resetButton = document.getElementById('reset') as HTMLButtonElement;
 const incorrectGuesses = document.getElementById('incorrectGuesses') as HTMLParagraphElement;
 const remainingGuesses = document.getElementById('remainingGuesses') as HTMLParagraphElement;
 const messageCenter = document.getElementById('messageCenter') as HTMLHeadingElement;
 
-secretWord.textContent = game.maskedSecretWord;
-updateMessageCenter('🎶🎵🎶 Welcome to jungle, we got fun and games 🎶🎵🎶');
-updateRemainingGuesses();
+let game: Hangman;
+resetGame();
 
-button.addEventListener('click', (e) => {
+submitButton.addEventListener('click', (e) => {
   const result = game.guess(guess.value);
   updateMessageCenter(result);
   secretWord.textContent = game.maskedSecretWord;
@@ -27,6 +24,21 @@ button.addEventListener('click', (e) => {
   }
 });
 
+resetButton.addEventListener('click', resetGame);
+function resetGame() {
+  fetch('https://random-word-api.herokuapp.com/word?number=1')
+    .then((response) => response.json())
+    .then((words) => {
+      const word = words[0];
+      game = new Hangman(word, 6);
+
+      secretWord.textContent = game.maskedSecretWord;
+      updateMessageCenter('🎶🎵🎶 Welcome to jungle, we got fun and games 🎶🎵🎶');
+      updateRemainingGuesses();
+      enableInputs();
+    });
+}
+
 function updateMessageCenter(message: string) {
   messageCenter.textContent = message;
   messageCenter.classList.add('bounce-in');
@@ -37,7 +49,12 @@ function updateMessageCenter(message: string) {
 
 function disableInputs() {
   guess.disabled = true;
-  button.disabled = true;
+  submitButton.disabled = true;
+}
+
+function enableInputs() {
+  guess.disabled = false;
+  submitButton.disabled = false;
 }
 
 function updateRemainingGuesses() {
