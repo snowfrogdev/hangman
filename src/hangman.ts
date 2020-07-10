@@ -9,4 +9,8 @@ class Hangman {
   get gameIsInProgress() {
     return true;
   }
+
+  guess(): string {
+    return 'result';
+  }
 }
