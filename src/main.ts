@@ -11,7 +11,16 @@ const messageCenter = document.getElementById('messageCenter') as HTMLHeadingEle
 let game: Hangman;
 resetGame();
 
-submitButton.addEventListener('click', (e) => {
+guess.addEventListener('keydown', event => {
+  if (event.keyCode === 13) {
+    updateOnGuess();
+  }
+})
+submitButton.addEventListener('click', event => {
+  updateOnGuess();
+});
+
+function updateOnGuess() {
   const result = game.guess(guess.value);
   updateMessageCenter(result);
   secretWord.textContent = game.maskedSecretWord;
@@ -22,9 +31,10 @@ submitButton.addEventListener('click', (e) => {
   if (!game.isInProgress) {
     disableInputs();
   }
-});
+}
 
 resetButton.addEventListener('click', resetGame);
+
 function resetGame() {
   fetch('https://random-word-api.herokuapp.com/word?number=1')
     .then((response) => response.json())
