@@ -3,11 +3,15 @@ import { Result } from './result';
 export class Hangman {
   private secretWord: string;
   private incorrectGuessesAllowed: number;
-  private incorrectGuesses: string[] = [];
+  private _incorrectGuesses: string[] = [];
   private guesses = new Set<string>();
   constructor(secretWord: string, incorrectGuessesAllowed: number) {
     this.secretWord = secretWord.toUpperCase();
     this.incorrectGuessesAllowed = incorrectGuessesAllowed;
+  }
+
+  get incorrectGuesses(): Iterable<string> {
+    return this._incorrectGuesses.values();
   }
 
   get gameIsInProgress() {
@@ -39,7 +43,7 @@ export class Hangman {
 
     if (this.isInTheSecretWord(validLetter)) return Result.Correct;
 
-    this.incorrectGuesses.push(validLetter);
+    this._incorrectGuesses.push(validLetter);
 
     if (this.isGameLost()) return Result.Lost;
 
@@ -62,7 +66,7 @@ export class Hangman {
   }
 
   private isGameLost(): boolean {
-    return this.incorrectGuesses.length > this.incorrectGuessesAllowed;
+    return this._incorrectGuesses.length > this.incorrectGuessesAllowed;
   }
 
   private isInTheSecretWord(validLetter: string): boolean {
