@@ -1,4 +1,4 @@
-class Hangman {
+export class Hangman {
   private secretWord: string;
   private incorrectGuessesAllowed: number;
   constructor(secretWord: string, incorrectGuessesAllowed: number) {
@@ -10,7 +10,7 @@ class Hangman {
     return true;
   }
 
-  guess(): string {
+  guess(letter: string): string {
     return 'result';
   }
 }
