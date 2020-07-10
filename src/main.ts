@@ -1,4 +1,5 @@
 import { Hangman } from './hangman';
+import { Result } from './result';
 
 const game = new Hangman('Vegemite', 6);
 
@@ -10,21 +11,29 @@ const remainingGuesses = document.getElementById('remainingGuesses') as HTMLPara
 const messageCenter = document.getElementById('messageCenter') as HTMLHeadingElement;
 
 secretWord.textContent = game.maskedSecretWord;
+updateMessageCenter('🎶🎵🎶 Welcome to jungle, we got fun and games 🎶🎵🎶');
 updateRemainingGuesses();
-messageCenter.textContent = '🎶🎵🎶 Welcome to jungle, we got fun and games 🎶🎵🎶';
 
 button.addEventListener('click', (e) => {
   const result = game.guess(guess.value);
-  messageCenter.textContent = result;
+  updateMessageCenter(result);
   secretWord.textContent = game.maskedSecretWord;
   incorrectGuesses.textContent = [...game.incorrectGuesses].join(', ');
   updateRemainingGuesses();
   guess.value = '';
-  
+
   if (!game.isInProgress) {
     disableInputs();
   }
 });
+
+function updateMessageCenter(message: string) {
+  messageCenter.textContent = message;
+  messageCenter.classList.add('bounce-in');
+  setTimeout(() => {
+    messageCenter.classList.remove('bounce-in');
+  }, 500);
+}
 
 function disableInputs() {
   guess.disabled = true;
