@@ -14,7 +14,7 @@ export class Hangman {
     return this._incorrectGuesses.values();
   }
 
-  get gameIsInProgress() {
+  get isInProgress() {
     return !this.isGameLost() && !this.isGameWon();
   }
 

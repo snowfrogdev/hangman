@@ -84,7 +84,7 @@ describe('Hangman.gameIsInProgress(),', () => {
         game.guess(guess);
       }
 
-      expect(game.gameIsInProgress).toBe(result);
+      expect(game.isInProgress).toBe(result);
     }
   );
 });
