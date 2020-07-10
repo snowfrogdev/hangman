@@ -18,11 +18,12 @@ export class Hangman {
     return !this.isGameLost() && !this.isGameWon();
   }
 
+  get remainingGuesses(): number {
+    return this.incorrectGuessesAllowed - this._incorrectGuesses.length;
+  }
+
   get maskedSecretWord(): string {
-    return this.secretWord
-      .split('')
-      .map(this.mask, this)
-      .join('');
+    return this.secretWord.split('').map(this.mask, this).join('');
   }
 
   private mask(letter: string): string {
